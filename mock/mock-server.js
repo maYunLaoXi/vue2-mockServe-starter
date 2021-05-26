@@ -11,7 +11,7 @@ function registerRoutes(app) {
   let mockLastIndex
   const mocks = require('./index.js')
   const mocksForServer = mocks.map(route => {
-    return responseFake(route.url, route.method, route.response)
+    return responseFake(route.url, route.method, route.response, route.forceMock)
   })
   for (const mock of mocksForServer) {
     app[mock.method](mock.url, mock.response)
@@ -33,11 +33,15 @@ function unregisterRoutes() {
 }
 
 // for mock server
-const responseFake = (url, method, respond) => {
+const responseFake = (url, method, respond, forceMock) => {
   return {
     url: new RegExp(`${process.env.VUE_APP_BASE_API || ''}${url}`),
     method: method || 'get',
     async response(req, res) {
+      if (forceMock) {
+        res.json(Mock.mock(respond instanceof Function ? respond(req, res) : respond))
+        return
+      }
       console.log('request invoke:', chalk.blue(`${req.path} ------------`))
       let resault = null
       const { method, body, query, headers, baseUrl, params } = req
@@ -50,6 +54,7 @@ const responseFake = (url, method, respond) => {
             'Content-Type': 'application/json'
           },
           method,
+          data: body,
           params: query
         })
         console.log(chalk.green('success +++++++++++++++'))

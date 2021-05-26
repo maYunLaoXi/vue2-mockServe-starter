@@ -22,6 +22,11 @@ const routes = [
     path: '/image',
     name: 'Image',
     component: () => import(/*webpackChunkName: "image" */ '../views/ImgView.vue')
+  },
+  {
+    path: '/force-mock',
+    name: 'ForceMock',
+    component: () => import(/*webpackChunkName: "force-mock" */ '../views/ForceMock.vue')
   }
 ];
 

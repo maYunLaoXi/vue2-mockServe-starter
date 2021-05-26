@@ -14,3 +14,11 @@ export function getTagsPortral(params) {
     params
   })
 }
+// forceMock示例
+export function forceMockApi(data) {
+  return request({
+    url: '/test/mock',
+    method: 'post',
+    data
+  })
+}

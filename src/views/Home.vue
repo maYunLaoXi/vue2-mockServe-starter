@@ -3,7 +3,8 @@
     <div class="imglist">
       <img class="cover" :src="data.coverUrl" alt="">
       <div class="link">
-        <router-link to="/about">关于</router-link>
+        <router-link to="/about">关于</router-link>&nbsp;
+        <router-link to="/force-mock">forceMock</router-link>
       </div>
       <div v-for="item in data.postList" :key="item.post_id" class="box">
         <img v-if="item.type !== 'text'" :src="item.cover_image_src" alt="" @click="toImgView(item)">
