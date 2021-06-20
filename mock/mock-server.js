@@ -4,6 +4,9 @@ const chalk = require('chalk')
 const path = require('path')
 const Mock = require('mockjs')
 const axios = require('axios')
+const { argv } = require('yargs')
+
+const forceMock = argv.mock || false
 
 const mockDir = path.join(process.cwd(), 'mock')
 
@@ -11,7 +14,7 @@ function registerRoutes(app) {
   let mockLastIndex
   const mocks = require('./index.js')
   const mocksForServer = mocks.map(route => {
-    return responseFake(route.url, route.method, route.response, route.forceMock)
+    return responseFake(route.url, route.method, route.response, forceMock || route.forceMock)
   })
   for (const mock of mocksForServer) {
     app[mock.method](mock.url, mock.response)
